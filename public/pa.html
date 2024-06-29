@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Reset Password</title>
+    <link rel="stylesheet" href="c2.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: url('const.jpeg'); /* Add your background image here */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        .main {
+            background-color: rgba(255, 255, 255, 0.8); /* Slightly transparent white background */
+            border-radius: 15px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+            padding: 20px 30px;
+            text-align: center;
+            width: 300px;
+        }
+
+        h1 {
+            color: #0047AB;
+            margin-bottom: 10px;
+        }
+
+        h3 {
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            width: 100%;
+            margin-top: 10px;
+            margin-bottom: 5px;
+            text-align: left;
+            color: #555;
+            font-weight: bold;
+        }
+
+        input {
+            display: block;
+            width: 100%;
+            margin-bottom: 15px;
+            padding: 10px;
+            box-sizing: border-box;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            margin-bottom: 15px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            background-color: #0047AB;
+            width: 100%;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #003A8B;
+        }
+
+        .wrap {
+            display: flex;
+            width: 100%;
+            height: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <h1>Reset your password</h1>
+        <h3>Enter your login credentials</h3>
+        <form id="reset-password-form">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" placeholder="Enter your Username" required>
+            <label for="old-password">Old Password:</label>
+            <input type="password" id="old-password" name="old-password" placeholder="Enter your Old Password" required>
+            <label for="new-password">New Password:</label>
+            <input type="password" id="new-password" name="new-password" placeholder="Enter your New Password" required>
+            <div class="wrap">
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+        <p>Remember your password? <a href="index.html" style="text-decoration: none;">Login</a></p>
+        <p id="error-message" style="color: red;"></p> <!-- Display error message -->
+    </div>
+
+    <script>
+        document.getElementById('reset-password-form').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var username = document.getElementById('username').value;
+            var oldPassword = document.getElementById('old-password').value;
+            var newPassword = document.getElementById('new-password').value;
+            var errorMessage = document.getElementById('error-message');
+
+            fetch('http://localhost:8080/reset-password', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ username: username, oldPassword: oldPassword, newPassword: newPassword }),
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => { throw new Error(data.error); });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert(data.message); // Display success message
+                window.location.href = 'index.html'; // Redirect to login page
+            })
+            .catch(error => {
+                errorMessage.textContent = error.message;
+                console.error('Error:', error);
+            });
+        });
+    </script>
+</body>
+</html>
