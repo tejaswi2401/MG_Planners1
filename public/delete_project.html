@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Project</title>
+    <link rel="stylesheet" href="styles2.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: url('const.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .container {
+            margin-top: 100px;
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .project-list {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .project-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #ddd;
+            padding: 10px 0;
+        }
+
+        .project-item span {
+            flex: 1;
+        }
+
+        .delete-button {
+            background-color: #dc3545;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 3px;
+            outline: none;
+        }
+
+        .delete-button:hover {
+            background-color: #c82333;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="logo.png" alt="Company Logo">
+        </div>
+        <div class="logout">
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Delete Project</h2>
+        <ul class="project-list" id="projectList">
+            <!-- Project items will be added dynamically here -->
+        </ul>
+    </div>
+
+    <script>
+        // Function to retrieve and display projects
+        function displayProjects() {
+            var projects = JSON.parse(localStorage.getItem('projects')) || [];
+
+            var projectList = document.getElementById('projectList');
+            projectList.innerHTML = ''; // Clear previous list
+
+            projects.forEach(function(project) {
+                var listItem = document.createElement('li');
+                listItem.classList.add('project-item');
+                listItem.innerHTML = `
+                    <span>${project.name} - ${project.date} (Budget: ${project.budget})</span>
+                    <button class="delete-button" onclick="deleteProject('${project.name}')">Delete</button>
+                `;
+                projectList.appendChild(listItem);
+            });
+        }
+
+        // Function to delete a project
+        function deleteProject(projectName) {
+            var confirmation = confirm(`Are you sure you want to delete project "${projectName}"?`);
+            if (confirmation) {
+                var projects = JSON.parse(localStorage.getItem('projects')) || [];
+
+                // Filter out the project to be deleted
+                var updatedProjects = projects.filter(function(project) {
+                    return project.name !== projectName;
+                });
+
+                // Update localStorage with updated projects list
+                localStorage.setItem('projects', JSON.stringify(updatedProjects));
+
+                // Display confirmation message
+                alert(`Project "${projectName}" deleted successfully.`);
+
+                // Refresh the project list
+                displayProjects();
+            }
+        }
+
+        function logout() {
+            var confirmation = confirm('Are you sure you want to logout?');
+            if (confirmation) {
+                window.location.href = 'index.html'; // Redirect to index.html
+            }
+        }
+
+        // Load projects when the page loads
+        window.onload = displayProjects;
+    </script>
+</body>
+</html>

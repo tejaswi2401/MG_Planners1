@@ -22,7 +22,7 @@
 
         .navbar {
             width: 100%;
-            background-color: rgba(0, 71, 171, 0.8); /* Add opacity to the navbar */
+            background-color: rgba(0, 71, 171, 0.8);
             padding: 10px 20px;
             display: flex;
             justify-content: space-between;
@@ -60,15 +60,15 @@
 
         .center-content {
             display: flex;
-            flex-direction: column;
+            flex-direction: row; /* Display dropdowns in a row */
             align-items: center;
             justify-content: center;
             text-align: center;
-            margin-top: 150px; /* Increased margin to ensure it is below the navbar */
+            margin-top: 150px;
         }
 
-        .center-content .button,
-        .center-content .dropdown .dropbtn {
+        .button,
+        .dropdown .dropbtn {
             font-size: 20px;
             color: white;
             text-align: center;
@@ -80,12 +80,12 @@
             border: none;
             outline: none;
             cursor: pointer;
-            width: 200px; /* Set all buttons to the same width */
+            width: 200px;
             display: inline-block;
         }
 
-        .center-content .button:hover,
-        .center-content .dropdown .dropbtn:hover {
+        .button:hover,
+        .dropdown .dropbtn:hover {
             background-color: #87CEEB;
         }
 
@@ -101,12 +101,13 @@
             min-width: 200px;
             box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
             z-index: 1;
-            left: 100%; /* Display to the right of the button */
-            top: 0;
+            left: 0;
+            top: 100%;
+            border-radius: 5px;
+            margin-top: 5px;
         }
 
         .dropdown-content a {
-            float: none;
             color: black;
             padding: 12px 16px;
             text-decoration: none;
@@ -118,7 +119,36 @@
             background-color: #ddd;
         }
 
-        .dropdown:hover .dropdown-content {
+        .dropdown.show .dropdown-content {
+            display: block;
+        }
+
+        .nested-dropdown {
+            position: absolute;
+            top: 0;
+            left: 100%;
+            display: none;
+            background-color: #f9f9f9;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+            z-index: 1;
+            border-radius: 5px;
+            margin-top: -1px;
+        }
+
+        .nested-dropdown a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+        }
+
+        .nested-dropdown a:hover {
+            background-color: #ddd;
+        }
+
+        .dropdown:hover .nested-dropdown {
             display: block;
         }
     </style>
@@ -135,47 +165,48 @@
 
     <div class="center-content">
         <div class="dropdown">
-            <button class="dropbtn">Reports</button>
-            <div class="dropdown-content">
-                <a href="#" onclick="Reports('Krishnalanka')">Krishnalanka</a>
-                <a href="#" onclick="Reports('Suryaraopet')">Suryaraopet</a>
-                <a href="#" onclick="Reports('Sivalayam')">Sivalayam</a>
+            <button class="dropbtn" onclick="toggleDropdown('reportsDropdown')">Reports</button>
+            <div id="reportsDropdown" class="dropdown-content">
+                <a href="reports.html">View Reports</a>
+                <a href="add_report.html">Add Report</a>
             </div>
         </div>
         <div class="dropdown">
-            <button class="dropbtn">Projects</button>
-            <div class="dropdown-content">
-                <a href="#">New Project</a>
-                <a href="#">Update Project</a>
-                <a href="#">Delete Project</a>
+            <button class="dropbtn" onclick="toggleDropdown('projectsDropdown')">Projects</button>
+            <div id="projectsDropdown" class="dropdown-content">
+                <a href="new_project.html">New Project</a>
+                <a href="update_project.html">Update Project</a>
+                <a href="delete_project.html">Delete Project</a>
             </div>
         </div>
-        <div class="dropdown">
-            <button class="dropbtn">Materials</button>
-            <div class="dropdown-content">
-                <a href="#">Available Materials</a>
-                <a href="#">Update Material</a>
-                <a href="#">Delete Material</a>
-            </div>
-        </div>
-        <a href="#" class="button">Bill Entry</a>
+        
+            <a href="materials.html" class="button">Materials</a>
+        <a href="bill_entry.html" class="button">Bill Entry</a>
     </div>
 
     <script>
-        function Reports(project) {
-            if (project === 'Krishnalanka') {
-                window.location.href = 'krishnalanka.html';
-            } else if (project === 'Suryaraopet') {
-                window.location.href = 'suryaraopet.html';
-            } else if (project === 'Sivalayam') {
-                window.location.href = 'sivalayam.html';
-            }
+        function toggleDropdown(dropdownId) {
+            var dropdown = document.getElementById(dropdownId);
+            dropdown.classList.toggle("show");
         }
 
         function logout() {
             var confirmation = confirm('Are you sure you want to logout?');
             if (confirmation) {
                 window.location.href = 'index.html'; // Redirect to index.html
+            }
+        }
+
+        // Close the dropdown menu if the user clicks outside of it
+        window.onclick = function(event) {
+            if (!event.target.matches('.dropbtn')) {
+                var dropdowns = document.getElementsByClassName("dropdown-content");
+                for (var i = 0; i < dropdowns.length; i++) {
+                    var openDropdown = dropdowns[i];
+                    if (openDropdown.classList.contains('show')) {
+                        openDropdown.classList.remove('show');
+                    }
+                }
             }
         }
     </script>

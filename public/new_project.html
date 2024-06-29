@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>New Project</title>
+    <link rel="stylesheet" href="styles2.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: url('const.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .form-container {
+            margin-top: 100px;
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .form-group input {
+            width: calc(100% - 12px);
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+        }
+
+        .form-group input[type="submit"] {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .form-group input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="logo.png" alt="Company Logo">
+        </div>
+        <div class="logout">
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+
+    <div class="form-container">
+        <h2>New Project</h2>
+        <form id="newProjectForm" onsubmit="saveProject(event)">
+            <div class="form-group">
+                <label for="projectName">Project Name:</label>
+                <input type="text" id="projectName" name="projectName" required>
+            </div>
+            <div class="form-group">
+                <label for="projectDate">Project Date:</label>
+                <input type="date" id="projectDate" name="projectDate" required>
+            </div>
+            <div class="form-group">
+                <label for="expectedBudget">Expected Budget:</label>
+                <input type="number" id="expectedBudget" name="expectedBudget" required>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save">
+            </div>
+        </form>
+    </div>
+
+    <script>
+        function logout() {
+            var confirmation = confirm('Are you sure you want to logout?');
+            if (confirmation) {
+                window.location.href = 'index.html'; // Redirect to index.html
+            }
+        }
+
+        function saveProject(event) {
+            event.preventDefault();
+
+            // Retrieve form values
+            var projectName = document.getElementById('projectName').value;
+            var projectDate = document.getElementById('projectDate').value;
+            var expectedBudget = document.getElementById('expectedBudget').value;
+
+            // Create an object to hold project data
+            var projectData = {
+                name: projectName,
+                date: projectDate,
+                budget: expectedBudget
+            };
+
+            // Save the project data to localStorage (or backend/API)
+            // For demonstration, we'll use localStorage here
+            var projects = JSON.parse(localStorage.getItem('projects')) || [];
+            projects.push(projectData);
+            localStorage.setItem('projects', JSON.stringify(projects));
+
+            // Redirect to homepage or any other page after saving
+            window.location.href = 'homepage.html'; // Adjust as per your application flow
+        }
+    </script>
+</body>
+</html>

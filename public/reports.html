@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports</title>
+    <link rel="stylesheet" href="styles2.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            background-image: url('const.jpeg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .navbar {
+            width: 100%;
+            background-color: rgba(0, 71, 171, 0.8);
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo img {
+            height: 50px;
+        }
+
+        .navbar .logout {
+            margin-left: auto;
+            margin-right: 20px;
+        }
+
+        .navbar .logout a {
+            font-size: 16px;
+            color: white;
+            text-decoration: none;
+            background-color: transparent;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+        }
+
+        .navbar .logout a:hover {
+            background-color: #ddd;
+            color: black;
+        }
+
+        .report-options {
+            text-align: center;
+            margin-top: 100px;
+        }
+
+        .report-options a {
+            display: block;
+            padding: 15px 30px;
+            margin: 10px auto;
+            background-color: #ADD8E6;
+            color: #000;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+            width: 200px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .report-options a:hover {
+            background-color: #87CEEB;
+        }
+
+        #reportDetails {
+            display: none;
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        #reportDetails table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        #reportDetails th, #reportDetails td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        #reportDetails th {
+            background-color: #f2f2f2;
+        }
+
+        .search-container {
+            margin-top: 20px;
+            width: 80%;
+            max-width: 600px;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .search-container input[type="text"] {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            width: 40%;
+        }
+
+        .search-container input[type="date"] {
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            outline: none;
+            width: 40%;
+        }
+
+        .search-container button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .search-container button:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <img src="logo.png" alt="Company Logo">
+        </div>
+        <div class="logout">
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+
+    <div class="report-options" id="reportOptions">
+        <div class="dropbtn">
+            <a href="Krishnalanka.html">Krishnalanka</a>
+            <a href="Suryaraopet.html">Suryaraopet</a>
+            <a href="Sivalayam.html">Sivalayam</a>
+        </div>
+        <!-- Dynamic project links will be added here -->
+    </div>
+
+    <div id="reportDetails">
+        <h3 id="reportTitle"></h3>
+        <div class="search-container">
+            <input type="text" id="materialInput" placeholder="Enter Material">
+            <input type="text" id="dateInput" placeholder="Enter Date as String">
+            <button onclick="filterEntries()">Search</button>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Category</th>
+                </tr>
+            </thead>
+            <tbody id="reportEntries">
+                <!-- Report entries will be added dynamically here -->
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="text-align: right;"><strong>Total Price:</strong></td>
+                    <td id="totalPrice"></td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <script>
+        function logout() {
+            var confirmation = confirm('Are you sure you want to logout?');
+            if (confirmation) {
+                window.location.href = 'index.html'; // Redirect to index.html
+            }
+        }
+
+        function loadReports() {
+            var reports = JSON.parse(localStorage.getItem('reports')) || {};
+            var reportOptions = document.getElementById('reportOptions');
+
+            for (var projectName in reports) {
+                if (reports.hasOwnProperty(projectName)) {
+                    if (!document.querySelector(`#reportOptions a[href="${projectName}.html"]`)) {
+                        var projectLink = document.createElement('a');
+                        projectLink.href = `${projectName}.html`;
+                        projectLink.textContent = projectName;
+                        projectLink.onclick = function(event) {
+                            event.preventDefault();
+                            showReportDetails(this.textContent);
+                        };
+                        reportOptions.appendChild(projectLink);
+                    }
+                }
+            }
+        }
+
+        function showReportDetails(projectName) {
+            var reports = JSON.parse(localStorage.getItem('reports')) || {};
+            var report = reports[projectName];
+            var reportDetails = document.getElementById('reportDetails');
+            var reportTitle = document.getElementById('reportTitle');
+            var reportEntries = document.getElementById('reportEntries');
+            var totalPriceElement = document.getElementById('totalPrice');
+            
+            if (report) {
+                reportTitle.textContent = projectName + ' Report';
+                reportEntries.innerHTML = '';
+                let totalPrice = 0;
+                
+                report.forEach(entry => {
+                    var row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${formatDate(entry.date)}</td>
+                        <td>${entry.description}</td>
+                        <td>${entry.price}</td>
+                        <td>${entry.category}</td>
+                    `;
+                    reportEntries.appendChild(row);
+                    totalPrice += parseFloat(entry.price) || 0;
+                });
+                
+                totalPriceElement.textContent = totalPrice.toFixed(2);
+                reportDetails.style.display = 'block';
+            } else {
+                alert('No report found for ' + projectName);
+                reportDetails.style.display = 'none';
+            }
+        }
+
+        function formatDate(excelDate) {
+            if (!excelDate) return '';
+
+            // Check if the date is in string format
+            if (typeof excelDate === 'string') {
+                return excelDate; // Return the date string as is
+            }
+
+            // Check if the date is a number (Excel serial number)
+            if (typeof excelDate === 'number') {
+                var date = new Date((excelDate - 25569) * 86400 * 1000);
+                return ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + date.getDate()).slice(-2) + '-' + date.getFullYear();
+            }
+
+            return '';
+        }
+
+        function filterEntries() {
+            var materialInput = document.getElementById('materialInput').value.trim().toLowerCase();
+            var dateInput = document.getElementById('dateInput').value.trim(); // Date input as string
+            var reportEntries = document.getElementById('reportEntries').getElementsByTagName('tr');
+            var totalPrice = 0;
+
+            for (var i = 0; i < reportEntries.length; i++) {
+                var entry = reportEntries[i];
+                var cells = entry.getElementsByTagName('td');
+                var date = cells[0].textContent.trim(); // Date in table cell
+                var category = cells[3].textContent.trim().toLowerCase(); // Material in table cell
+
+                var showEntry = true;
+
+                // Filter by material
+                if (materialInput !== '' && category !== materialInput) {
+                    showEntry = false;
+                }
+
+                // Filter by date
+                if (dateInput !== '' && date !== dateInput) {
+                    showEntry = false;
+                }
+
+                // Show or hide row based on filters
+                entry.style.display = showEntry ? '' : 'none';
+
+                // Calculate total price if entry is shown
+                if (showEntry) {
+                    totalPrice += parseFloat(cells[2].textContent) || 0;
+                }
+            }
+
+            // Update total price display
+            document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
+        }
+
+        loadReports();
+    </script>
+</body>
+</html>
