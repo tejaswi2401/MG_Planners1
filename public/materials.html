@@ -1,10 +1,5 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Materials</title>
-    <link rel="stylesheet" href="styles2.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,9 +15,25 @@
             background-position: center;
         }
 
+        .navbar {
+            width: 100%;
+            background-color: #333;
+            color: #fff;
+            padding: 10px 20px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar .logo img {
+            max-width: 100px;
+            height: auto;
+        }
+
         .container {
-            margin-top: 100px;
-            width: 80%;
+            margin-top: 20px;
+            width: 90%;
             max-width: 600px;
             background-color: #fff;
             padding: 20px;
@@ -33,6 +44,8 @@
         .material-list {
             list-style-type: none;
             padding: 0;
+            margin-top: 10px;
+            margin-bottom: 20px;
         }
 
         .material-item {
@@ -41,25 +54,33 @@
             align-items: center;
             border-bottom: 1px solid #ddd;
             padding: 10px 0;
+            font-size: 16px;
         }
 
         .material-item span {
             flex: 1;
+            overflow: hidden;
+            white-space: nowrap;
+            text-overflow: ellipsis;
         }
 
         .actions {
             margin-top: 20px;
             display: flex;
             justify-content: space-between;
+            flex-wrap: wrap;
         }
 
         .action-button {
+            flex-basis: 45%;
+            margin-bottom: 10px;
             padding: 10px 20px;
             font-size: 16px;
             cursor: pointer;
             border-radius: 5px;
             border: none;
             outline: none;
+            box-sizing: border-box;
         }
 
         .add-button {
@@ -86,7 +107,6 @@
             filter: brightness(85%);
         }
     </style>
-</head>
 <body>
     <div class="navbar">
         <div class="logo">
@@ -112,52 +132,94 @@
     </div>
 
     <script>
-        var materials = JSON.parse(localStorage.getItem('materials')) || [
-            "Agarla", "Bricks", "Cement", "Carpenter", "Cords", "Cupboards", "Foreman", "Electronics",
-            "Electrician", "Metal", "Others", "Other Workforce", "Paint", "Painter", "Steel", "Sand",
-            "Slab", "Fab", "Marble", "Tiles", "Stone", "Watchman", "Wood", "Water", "Sanitary",
-            "Sanitary Foreman", "Glass", "POP", "Polish"
-        ];
+        const apiUrl = 'http://localhost:8032/materials';
 
-        function displayMaterials() {
-            var materialList = document.getElementById('materialList');
+        function fetchMaterials() {
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    displayMaterials(data);
+                })
+                .catch(error => console.error('Error fetching materials:', error));
+        }
+
+        function displayMaterials(materials) {
+            const materialList = document.getElementById('materialList');
             materialList.innerHTML = '';
 
-            materials.forEach(function(material) {
-                var listItem = document.createElement('li');
+            materials.forEach(material => {
+                const listItem = document.createElement('li');
                 listItem.classList.add('material-item');
-                listItem.innerHTML = `<span>${material}</span>`;
+                listItem.innerHTML = `<span>${material.name}</span>`;
+                listItem.setAttribute('data-id', material.id);
+                listItem.setAttribute('data-name', material.name);
                 materialList.appendChild(listItem);
             });
         }
 
         function addMaterial() {
-            var newMaterial = prompt('Enter the new material name:');
+            const newMaterial = prompt('Enter the new material name:');
             if (newMaterial && newMaterial.trim() !== '') {
-                materials.push(newMaterial.trim());
-                displayMaterials();
+                fetch(apiUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: newMaterial.trim() })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    fetchMaterials();
+                })
+                .catch(error => console.error('Error adding material:', error));
             }
         }
 
         function updateMaterials() {
-            alert('Update functionality to be implemented.');
+            const materialNameToUpdate = prompt('Enter the current material name to update:');
+            const newMaterialName = prompt('Enter the new material name:');
+
+            const materialToUpdate = Array.from(document.querySelectorAll('.material-item')).find(
+                item => item.getAttribute('data-name') === materialNameToUpdate.trim()
+            );
+
+            if (materialToUpdate && newMaterialName && newMaterialName.trim() !== '') {
+                const materialId = materialToUpdate.getAttribute('data-id');
+                fetch(`${apiUrl}/${materialId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ name: newMaterialName.trim() })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    fetchMaterials();
+                })
+                .catch(error => console.error('Error updating material:', error));
+            } else {
+                alert('Material not found or invalid new name.');
+            }
         }
 
         function deleteMaterial() {
-            var materialToDelete = prompt('Enter the material name to delete:');
+            const materialToDelete = prompt('Enter the material name to delete:');
             if (materialToDelete && materialToDelete.trim() !== '') {
-                var index = materials.indexOf(materialToDelete.trim());
-                if (index !== -1) {
-                    materials.splice(index, 1);
-                    displayMaterials();
-                } else {
-                    alert('Material not found.');
-                }
+                fetch(`${apiUrl}/${encodeURIComponent(materialToDelete.trim())}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(data.message);
+                    fetchMaterials();
+                })
+                .catch(error => console.error('Error deleting material:', error));
             }
         }
 
         function saveMaterials() {
-            localStorage.setItem('materials', JSON.stringify(materials));
             alert('Materials saved successfully.');
         }
 
@@ -169,7 +231,7 @@
         }
 
         window.onload = function() {
-            displayMaterials();
+            fetchMaterials();
         };
     </script>
 </body>

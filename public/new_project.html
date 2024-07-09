@@ -1,69 +1,107 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>New Project</title>
-    <link rel="stylesheet" href="styles2.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-image: url('const.jpeg');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .form-container {
-            margin-top: 100px;
-            width: 80%;
-            max-width: 600px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: calc(100% - 12px);
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-
-        .form-group input[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 5px;
-            outline: none;
-        }
-
-        .form-group input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>New Project</title>
+        <link rel="stylesheet" href="styles2.css">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                background-image: url('const.jpeg');
+                background-size: cover;
+                background-position: center;
+            }
+    
+            .navbar {
+                width: 100%;
+                background-color: #0047AB;
+                color: white;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+                box-sizing: border-box;
+            }
+    
+            .navbar .logo img {
+                max-height: 40px;
+            }
+    
+            .navbar .logout a {
+                color: white;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 16px;
+            }
+    
+            .form-container {
+                margin-top: 20px;
+                width: 90%;
+                max-width: 600px;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            }
+    
+            .form-group {
+                margin-bottom: 20px;
+            }
+    
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+    
+            .form-group input {
+                width: calc(100% - 12px);
+                padding: 8px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+            }
+    
+            .form-group input[type="submit"] {
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                padding: 10px 20px;
+                font-size: 16px;
+                border-radius: 5px;
+                outline: none;
+            }
+    
+            .form-group input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+    
+            .message {
+                margin-top: 20px;
+                font-size: 16px;
+                color: green;
+                text-align: center;
+                display: none;
+            }
+    
+            .error {
+                margin-top: 20px;
+                font-size: 16px;
+                color: red;
+                text-align: center;
+                display: none;
+            }
+        </style>
+    </head>
 <body>
     <div class="navbar">
         <div class="logo">
@@ -81,10 +119,7 @@
                 <label for="projectName">Project Name:</label>
                 <input type="text" id="projectName" name="projectName" required>
             </div>
-            <div class="form-group">
-                <label for="projectDate">Project Date:</label>
-                <input type="date" id="projectDate" name="projectDate" required>
-            </div>
+            
             <div class="form-group">
                 <label for="expectedBudget">Expected Budget:</label>
                 <input type="number" id="expectedBudget" name="expectedBudget" required>
@@ -93,39 +128,51 @@
                 <input type="submit" value="Save">
             </div>
         </form>
+        <div id="message" class="message" style="display: none;"></div>
+        <div id="error" class="error" style="display: none;"></div>
     </div>
 
     <script>
-        function logout() {
-            var confirmation = confirm('Are you sure you want to logout?');
-            if (confirmation) {
-                window.location.href = 'index.html'; // Redirect to index.html
-            }
-        }
-
         function saveProject(event) {
             event.preventDefault();
 
             // Retrieve form values
             var projectName = document.getElementById('projectName').value;
-            var projectDate = document.getElementById('projectDate').value;
             var expectedBudget = document.getElementById('expectedBudget').value;
 
             // Create an object to hold project data
             var projectData = {
                 name: projectName,
-                date: projectDate,
-                budget: expectedBudget
+                expected_budget: parseFloat(expectedBudget)  // Ensure expectedBudget is parsed as a float
             };
 
-            // Save the project data to localStorage (or backend/API)
-            // For demonstration, we'll use localStorage here
-            var projects = JSON.parse(localStorage.getItem('projects')) || [];
-            projects.push(projectData);
-            localStorage.setItem('projects', JSON.stringify(projects));
-
-            // Redirect to homepage or any other page after saving
-            window.location.href = 'homepage.html'; // Adjust as per your application flow
+            fetch('http://localhost:8032/projects', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(projectData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to save project');
+                }
+                return response.json();
+            })
+            .then(data => {
+                console.log('Project saved successfully:', data);
+                document.getElementById('message').style.display = 'block';
+                document.getElementById('message').innerText = 'Project saved successfully!';
+                document.getElementById('error').style.display = 'none';
+                // Optionally, reset the form fields
+                document.getElementById('newProjectForm').reset();
+            })
+            .catch(error => {
+                console.error('Error saving project:', error);
+                document.getElementById('error').style.display = 'block';
+                document.getElementById('error').innerText = 'Failed to save project. Please try again.';
+                document.getElementById('message').style.display = 'none';
+            });
         }
     </script>
 </body>

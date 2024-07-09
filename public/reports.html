@@ -10,11 +10,6 @@
             font-family: Arial, sans-serif;
             margin: 0;
             padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
             background-image: url('const.jpeg');
             background-size: cover;
             background-position: center;
@@ -27,30 +22,27 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: fixed;
-            top: 0;
-            left: 0;
-            z-index: 1000;
         }
 
         .navbar .logo img {
-            height: 50px;
+            height: 40px;
         }
 
         .navbar .logout {
             margin-left: auto;
-            margin-right: 20px;
+            margin-right: 10px;
         }
 
         .navbar .logout a {
-            font-size: 16px;
+            font-size: 14px;
             color: white;
             text-decoration: none;
             background-color: transparent;
             border: none;
             outline: none;
             cursor: pointer;
-            padding: 14px 16px;
+            padding: 10px;
+            border-radius: 5px;
         }
 
         .navbar .logout a:hover {
@@ -58,102 +50,140 @@
             color: black;
         }
 
-        .report-options {
-            text-align: center;
-            margin-top: 100px;
+        .container {
+            max-width: 100%;
+            margin: 0;
+            padding: 10px;
         }
 
-        .report-options a {
-            display: block;
-            padding: 15px 30px;
-            margin: 10px auto;
+        h1 {
+            font-size: 22px;
+            margin-bottom: 15px;
+            text-align: center;
+            color: #333;
+        }
+
+        .dropbtn {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .dropbtn a {
+            display: inline-block;
+            padding: 12px 20px;
+            margin: 5px;
             background-color: #ADD8E6;
             color: #000;
             text-decoration: none;
-            font-size: 18px;
+            font-size: 16px;
             border-radius: 5px;
             transition: background-color 0.3s ease;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-            width: 200px;
+            width: 160px;
             text-align: center;
             cursor: pointer;
         }
 
-        .report-options a:hover {
+        .dropbtn a:hover {
             background-color: #87CEEB;
         }
 
-        #reportDetails {
-            display: none;
-            margin-top: 20px;
-            width: 80%;
-            max-width: 600px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        #reportDetails table {
+        /* Project table */
+        #project-table {
             width: 100%;
+            margin-bottom: 10px;
             border-collapse: collapse;
-            margin-top: 10px;
+            overflow-x: auto; /* Enable horizontal scrolling on small screens */
         }
 
-        #reportDetails th, #reportDetails td {
-            border: 1px solid #ddd;
+        #project-table th, #project-table td {
             padding: 8px;
             text-align: left;
+            border-bottom: 1px solid #ddd;
         }
 
-        #reportDetails th {
+        #project-table th {
             background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+            z-index: 1;
         }
 
-        .search-container {
-            margin-top: 20px;
-            width: 80%;
-            max-width: 600px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        #project-list a {
+            color: #007bff;
+            text-decoration: none;
         }
 
-        .search-container input[type="text"] {
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            outline: none;
-            width: 40%;
-        }
-
-        .search-container input[type="date"] {
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-            outline: none;
-            width: 40%;
-        }
-
-        .search-container button {
-            padding: 10px 20px;
-            font-size: 16px;
+        #project-list a:hover {
+            text-decoration: underline;
             cursor: pointer;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            outline: none;
         }
 
-        .search-container button:hover {
-            background-color: #0056b3;
+        /* Report filters */
+        #report-filters {
+            margin-bottom: 10px;
+        }
+
+        #report-filters h2 {
+            font-size: 16px;
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        #report-filters label {
+            margin-right: 8px;
+        }
+
+        #material-filter, #date-filter {
+            padding: 6px;
+            margin-right: 8px;
+        }
+
+        /* Report table */
+        #report-table {
+            width: 100%;
+            border-collapse: collapse;
+            overflow-x: auto; /* Enable horizontal scrolling on small screens */
+        }
+
+        #report-table th, #report-table td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        #report-table th {
+            background-color: #f2f2f2;
+            position: sticky;
+            top: 0;
+            z-index: 1;
+        }
+
+        #report-table tfoot td {
+            font-weight: bold;
+            text-align: right;
+        }
+
+        #total-amount {
+            font-weight: bold;
+            color: #333;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .container {
+                padding: 5px;
+            }
+            .navbar {
+                padding: 8px;
+            }
+            h1 {
+                font-size: 18px;
+            }
+            .dropbtn a {
+                padding: 10px;
+                font-size: 14px;
+            }
         }
     </style>
 </head>
@@ -167,159 +197,164 @@
         </div>
     </div>
 
-    <div class="report-options" id="reportOptions">
+    <div class="container">
+        <h1>Project Reports</h1>
         <div class="dropbtn">
             <a href="Krishnalanka.html">Krishnalanka</a>
             <a href="Suryaraopet.html">Suryaraopet</a>
             <a href="Sivalayam.html">Sivalayam</a>
         </div>
-        <!-- Dynamic project links will be added here -->
-    </div>
 
-    <div id="reportDetails">
-        <h3 id="reportTitle"></h3>
-        <div class="search-container">
-            <input type="text" id="materialInput" placeholder="Enter Material">
-            <input type="text" id="dateInput" placeholder="Enter Date as String">
-            <button onclick="filterEntries()">Search</button>
+        <table id="project-table">
+            <thead>
+                <tr>
+                    <th>Project Name</th>
+                    <th>Expected Budget</th>
+                </tr>
+            </thead>
+            <tbody id="project-list">
+                <!-- Project rows will be dynamically populated -->
+            </tbody>
+        </table>
+
+        <div id="report-filters" style="display: none;">
+            <h2>Filters</h2>
+            <label for="material-filter">Material:</label>
+            <select id="material-filter">
+                <option value="all">All</option>
+                <!-- Material options will be dynamically populated -->
+            </select>
+
+            <label for="date-filter">Date:</label>
+            <input type="date" id="date-filter">
         </div>
-        <table>
+
+        <table id="report-table" style="display: none;">
             <thead>
                 <tr>
                     <th>Date</th>
                     <th>Description</th>
-                    <th>Price</th>
-                    <th>Category</th>
+                    <th>Bill Amount</th>
+                    <th>Material</th>
                 </tr>
             </thead>
-            <tbody id="reportEntries">
-                <!-- Report entries will be added dynamically here -->
+            <tbody id="report-list">
+                <!-- Report rows will be dynamically populated -->
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="3" style="text-align: right;"><strong>Total Price:</strong></td>
-                    <td id="totalPrice"></td>
+                    <td colspan="3">Total Amount:</td>
+                    <td id="total-amount"></td>
                 </tr>
             </tfoot>
         </table>
     </div>
 
     <script>
-        function logout() {
-            var confirmation = confirm('Are you sure you want to logout?');
-            if (confirmation) {
-                window.location.href = 'index.html'; // Redirect to index.html
-            }
-        }
+        document.addEventListener('DOMContentLoaded', function () {
+            fetchProjects();
+            fetchMaterials();
 
-        function loadReports() {
-            var reports = JSON.parse(localStorage.getItem('reports')) || {};
-            var reportOptions = document.getElementById('reportOptions');
+            document.getElementById('material-filter').addEventListener('change', filterReports);
+            document.getElementById('date-filter').addEventListener('change', filterReports);
+        });
 
-            for (var projectName in reports) {
-                if (reports.hasOwnProperty(projectName)) {
-                    if (!document.querySelector(`#reportOptions a[href="${projectName}.html"]`)) {
-                        var projectLink = document.createElement('a');
-                        projectLink.href = `${projectName}.html`;
-                        projectLink.textContent = projectName;
-                        projectLink.onclick = function(event) {
-                            event.preventDefault();
-                            showReportDetails(this.textContent);
-                        };
-                        reportOptions.appendChild(projectLink);
-                    }
-                }
-            }
-        }
+        function fetchProjects() {
+            fetch('http://localhost:8032/projects')
+                .then(response => response.json())
+                .then(projects => {
+                    const projectList = document.getElementById('project-list');
+                    projectList.innerHTML = '';
 
-        function showReportDetails(projectName) {
-            var reports = JSON.parse(localStorage.getItem('reports')) || {};
-            var report = reports[projectName];
-            var reportDetails = document.getElementById('reportDetails');
-            var reportTitle = document.getElementById('reportTitle');
-            var reportEntries = document.getElementById('reportEntries');
-            var totalPriceElement = document.getElementById('totalPrice');
-            
-            if (report) {
-                reportTitle.textContent = projectName + ' Report';
-                reportEntries.innerHTML = '';
-                let totalPrice = 0;
-                
-                report.forEach(entry => {
-                    var row = document.createElement('tr');
-                    row.innerHTML = `
-                        <td>${formatDate(entry.date)}</td>
-                        <td>${entry.description}</td>
-                        <td>${entry.price}</td>
-                        <td>${entry.category}</td>
-                    `;
-                    reportEntries.appendChild(row);
-                    totalPrice += parseFloat(entry.price) || 0;
+                    projects.forEach(project => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td><a href="#" onclick="fetchReports('${project.name}')">${project.name}</a></td><td>${project.expected_budget}</td>`;
+                        projectList.appendChild(row);
+                    });
                 });
-                
-                totalPriceElement.textContent = totalPrice.toFixed(2);
-                reportDetails.style.display = 'block';
-            } else {
-                alert('No report found for ' + projectName);
-                reportDetails.style.display = 'none';
-            }
         }
 
-        function formatDate(excelDate) {
-            if (!excelDate) return '';
+        function fetchMaterials() {
+            fetch('http://localhost:8032/materials')
+                .then(response => response.json())
+                .then(materials => {
+                    const materialFilter = document.getElementById('material-filter');
+                    materialFilter.innerHTML = '<option value="all">All</option>';
 
-            // Check if the date is in string format
-            if (typeof excelDate === 'string') {
-                return excelDate; // Return the date string as is
-            }
-
-            // Check if the date is a number (Excel serial number)
-            if (typeof excelDate === 'number') {
-                var date = new Date((excelDate - 25569) * 86400 * 1000);
-                return ("0" + (date.getMonth() + 1)).slice(-2) + '-' + ("0" + date.getDate()).slice(-2) + '-' + date.getFullYear();
-            }
-
-            return '';
+                    materials.forEach(material => {
+                        const option = document.createElement('option');
+                        option.value = material.name;
+                        option.textContent = material.name;
+                        materialFilter.appendChild(option);
+                    });
+                });
         }
 
-        function filterEntries() {
-            var materialInput = document.getElementById('materialInput').value.trim().toLowerCase();
-            var dateInput = document.getElementById('dateInput').value.trim(); // Date input as string
-            var reportEntries = document.getElementById('reportEntries').getElementsByTagName('tr');
-            var totalPrice = 0;
-
-            for (var i = 0; i < reportEntries.length; i++) {
-                var entry = reportEntries[i];
-                var cells = entry.getElementsByTagName('td');
-                var date = cells[0].textContent.trim(); // Date in table cell
-                var category = cells[3].textContent.trim().toLowerCase(); // Material in table cell
-
-                var showEntry = true;
-
-                // Filter by material
-                if (materialInput !== '' && category !== materialInput) {
-                    showEntry = false;
-                }
-
-                // Filter by date
-                if (dateInput !== '' && date !== dateInput) {
-                    showEntry = false;
-                }
-
-                // Show or hide row based on filters
-                entry.style.display = showEntry ? '' : 'none';
-
-                // Calculate total price if entry is shown
-                if (showEntry) {
-                    totalPrice += parseFloat(cells[2].textContent) || 0;
-                }
+        function fetchReports(projectName) {
+            if (projectName === 'Krishnalanka') {
+                window.location.href = 'krishnalanka.html';
+                return;
+            } else if (projectName === 'Sivalayam') {
+                window.location.href = 'sivalayam.html';
+                return;
+            } else if (projectName === 'Suryaraopet') {
+                window.location.href = 'suryaraopet.html';
+                return;
             }
 
-            // Update total price display
-            document.getElementById('totalPrice').textContent = totalPrice.toFixed(2);
+            fetch(`http://localhost:8032/bill_entries/projectName?projectName=${projectName}`)
+                .then(response => response.json())
+                .then(reports => {
+                    const reportList = document.getElementById('report-list');
+                    reportList.innerHTML = '';
+
+                    let totalAmount = 0;
+
+                    reports.forEach(report => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${report.date}</td><td>${report.description}</td><td>${report.bill_amount}</td><td>${report.material}</td>`;
+                        reportList.appendChild(row);
+                        totalAmount += report.bill_amount;
+                    });
+
+                    document.getElementById('total-amount').textContent = totalAmount.toFixed(2);
+
+                    document.getElementById('report-filters').style.display = 'block';
+                    document.getElementById('report-table').style.display = 'table';
+                });
         }
 
-        loadReports();
+        function filterReports() {
+            const projectName = document.querySelector('#project-list a.active').textContent;
+            const material = document.getElementById('material-filter').value;
+            const date = document.getElementById('date-filter').value;
+
+            let url = `http://localhost:8032/bill_entries/projectName?projectName=${projectName}`;
+            if (material !== 'all') {
+                url += `&material=${material}`;
+            }
+            if (date) {
+                url += `&date=${date}`;
+            }
+
+            fetch(url)
+                .then(response => response.json())
+                .then(reports => {
+                    const reportList = document.getElementById('report-list');
+                    reportList.innerHTML = '';
+
+                    let totalAmount = 0;
+
+                    reports.forEach(report => {
+                        const row = document.createElement('tr');
+                        row.innerHTML = `<td>${report.date}</td><td>${report.description}</td><td>${report.bill_amount}</td><td>${report.material}</td>`;
+                        reportList.appendChild(row);
+                        totalAmount += report.bill_amount;
+                    });
+
+                    document.getElementById('total-amount').textContent = totalAmount.toFixed(2);
+                });
+        }
     </script>
 </body>
 </html>

@@ -1,69 +1,91 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Update Project</title>
-    <link rel="stylesheet" href="styles2.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-image: url('const.jpeg');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .form-container {
-            margin-top: 100px;
-            width: 80%;
-            max-width: 600px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-        }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .form-group input {
-            width: calc(100% - 12px);
-            padding: 8px;
-            font-size: 16px;
-            border: 1px solid #ccc;
-            border-radius: 3px;
-        }
-
-        .form-group input[type="submit"] {
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            padding: 10px 20px;
-            font-size: 16px;
-            border-radius: 5px;
-            outline: none;
-        }
-
-        .form-group input[type="submit"]:hover {
-            background-color: #0056b3;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Update Project</title>
+        <link rel="stylesheet" href="styles2.css">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                background-image: url('const.jpeg');
+                background-size: cover;
+                background-position: center;
+            }
+    
+            .navbar {
+                width: 100%;
+                background-color: #0047AB;
+                color: white;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                padding: 10px 20px;
+                box-sizing: border-box;
+            }
+    
+            .navbar .logo img {
+                max-height: 40px;
+            }
+    
+            .navbar .logout a {
+                color: white;
+                text-decoration: none;
+                font-weight: bold;
+                font-size: 16px;
+            }
+    
+            .form-container {
+                margin-top: 20px;
+                width: 90%;
+                max-width: 600px;
+                background-color: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            }
+    
+            .form-group {
+                margin-bottom: 20px;
+            }
+    
+            .form-group label {
+                display: block;
+                margin-bottom: 5px;
+                font-weight: bold;
+            }
+    
+            .form-group input {
+                width: calc(100% - 12px);
+                padding: 8px;
+                font-size: 16px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+            }
+    
+            .form-group input[type="submit"] {
+                background-color: #007bff;
+                color: #fff;
+                border: none;
+                cursor: pointer;
+                padding: 10px 20px;
+                font-size: 16px;
+                border-radius: 5px;
+                outline: none;
+            }
+    
+            .form-group input[type="submit"]:hover {
+                background-color: #0056b3;
+            }
+        </style>
+    </head>
 <body>
     <div class="navbar">
         <div class="logo">
@@ -76,14 +98,19 @@
 
     <div class="form-container">
         <h2>Update Project</h2>
-        <form id="updateProjectForm" onsubmit="updateProject(event)">
+        <form id="getProjectForm" onsubmit="getProjectDetails(event)">
             <div class="form-group">
-                <label for="projectName">Project Name:</label>
-                <input type="text" id="projectName" name="projectName" required>
+                <label for="searchProjectName">Project Name:</label>
+                <input type="text" id="searchProjectName" name="searchProjectName" required>
             </div>
             <div class="form-group">
-                <label for="projectDate">Project Date:</label>
-                <input type="date" id="projectDate" name="projectDate" required>
+                <input type="submit" value="Search">
+            </div>
+        </form>
+        <form id="updateProjectForm" onsubmit="updateProject(event)" style="display:none;">
+            <div class="form-group">
+                <label for="projectName">Project Name:</label>
+                <input type="text" id="projectName" name="projectName" readonly>
             </div>
             <div class="form-group">
                 <label for="expectedBudget">Expected Budget:</label>
@@ -104,24 +131,30 @@
         }
 
         // Function to retrieve project details and populate form
-        function populateForm() {
-            var projectName = prompt('Enter the project name to update:');
-            if (!projectName) return; // If user cancels, do nothing
+        function getProjectDetails(event) {
+            event.preventDefault();
 
-            // Fetch project details based on projectName (assuming from localStorage)
-            var projects = JSON.parse(localStorage.getItem('projects')) || [];
-            var projectToUpdate = projects.find(function(project) {
-                return project.name === projectName;
-            });
+            var projectName = document.getElementById('searchProjectName').value;
 
-            if (projectToUpdate) {
-                // Populate form fields with existing project data
-                document.getElementById('projectName').value = projectToUpdate.name;
-                document.getElementById('projectDate').value = projectToUpdate.date;
-                document.getElementById('expectedBudget').value = projectToUpdate.budget;
-            } else {
-                alert('Project not found. Please enter a valid project name.');
-            }
+            // Fetch project details from server based on projectName
+            fetch(`http://localhost:8032/projects/name/${projectName}`)
+                .then(response => response.json())
+                .then(project => {
+                    if (project) {
+                        // Populate form fields with existing project data
+                        document.getElementById('projectName').value = project.name;
+                        document.getElementById('expectedBudget').value = project.expected_budget;
+
+                        // Show the update form
+                        document.getElementById('updateProjectForm').style.display = 'block';
+                    } else {
+                        alert('Project not found. Please enter a valid project name.');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('Failed to fetch project details. Please try again.');
+                });
         }
 
         // Function to update project details
@@ -130,37 +163,32 @@
 
             // Retrieve updated values from form
             var updatedProjectName = document.getElementById('projectName').value;
-            var updatedProjectDate = document.getElementById('projectDate').value;
             var updatedExpectedBudget = document.getElementById('expectedBudget').value;
 
-            // Fetch existing projects from localStorage
-            var projects = JSON.parse(localStorage.getItem('projects')) || [];
+            // Prepare data to send to server
+            var formData = {
+                name: updatedProjectName,
+                expected_budget: updatedExpectedBudget
+            };
 
-            // Find the project to update
-            var projectIndex = projects.findIndex(function(project) {
-                return project.name === updatedProjectName;
+            // Send update request to server
+            fetch('http://localhost:8032/projects/name/' + updatedProjectName, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message); // Show success message from server
+                window.location.href = 'homepage.html'; // Redirect to homepage after update
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Failed to update project. Please try again.');
             });
-
-            if (projectIndex !== -1) {
-                // Update the project details
-                projects[projectIndex].date = updatedProjectDate;
-                projects[projectIndex].budget = updatedExpectedBudget;
-
-                // Save updated projects back to localStorage
-                localStorage.setItem('projects', JSON.stringify(projects));
-
-                // Confirmation message
-                alert('Project updated successfully.');
-
-                // Redirect to homepage or any other page
-                window.location.href = 'homepage.html'; // Adjust as per your application flow
-            } else {
-                alert('Project not found. Please enter a valid project name.');
-            }
         }
-
-        // Call populateForm function on page load to initialize the form
-        window.onload = populateForm;
     </script>
 </body>
 </html>

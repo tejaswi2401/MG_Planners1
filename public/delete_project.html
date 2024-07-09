@@ -5,130 +5,115 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Delete Project</title>
     <link rel="stylesheet" href="styles2.css">
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-image: url('const.jpeg');
-            background-size: cover;
-            background-position: center;
-        }
-
-        .container {
-            margin-top: 100px;
-            width: 80%;
-            max-width: 600px;
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 5px;
-            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-        }
-
-        .project-list {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        .project-item {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #ddd;
-            padding: 10px 0;
-        }
-
-        .project-item span {
-            flex: 1;
-        }
-
-        .delete-button {
-            background-color: #dc3545;
-            color: #fff;
-            border: none;
-            cursor: pointer;
-            padding: 5px 10px;
-            border-radius: 3px;
-            outline: none;
-        }
-
-        .delete-button:hover {
-            background-color: #c82333;
-        }
-    </style>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Delete Project</title>
+        <link rel="stylesheet" href="styles2.css">
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                min-height: 100vh;
+                background-image: url('const.jpeg');
+                background-size: cover;
+                background-position: center;
+                margin: 0;
+                padding: 0;
+            }
+    
+            .container {
+                width: 90%;
+                max-width: 400px;
+                background-color: rgba(255, 255, 255, 0.9);
+                padding: 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+                text-align: center;
+            }
+    
+            h1 {
+                margin-bottom: 20px;
+            }
+    
+            label {
+                display: block;
+                margin-bottom: 10px;
+                font-weight: bold;
+                text-align: left;
+            }
+    
+            input[type="text"] {
+                width: calc(100% - 20px);
+                padding: 10px;
+                margin-bottom: 20px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+                font-size: 16px;
+                box-sizing: border-box;
+            }
+    
+            button {
+                width: 100%;
+                padding: 10px;
+                background-color: #d9534f;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                font-size: 16px;
+                cursor: pointer;
+                box-sizing: border-box;
+            }
+    
+            button:hover {
+                background-color: #c9302c;
+            }
+    
+            #message {
+                margin-top: 20px;
+                font-size: 16px;
+            }
+        </style>
+    </head>
 </head>
 <body>
-    <div class="navbar">
-        <div class="logo">
-            <img src="logo.png" alt="Company Logo">
-        </div>
-        <div class="logout">
-            <a href="#" onclick="logout()">Logout</a>
-        </div>
-    </div>
-
     <div class="container">
-        <h2>Delete Project</h2>
-        <ul class="project-list" id="projectList">
-            <!-- Project items will be added dynamically here -->
-        </ul>
+        <h1>Delete Project</h1>
+        <form id="deleteProjectForm">
+            <label for="projectName">Project Name:</label>
+            <input type="text" id="projectName" name="projectName" required>
+            <button type="submit">Delete Project</button>
+        </form>
+        <p id="message"></p>
     </div>
 
     <script>
-        // Function to retrieve and display projects
-        function displayProjects() {
-            var projects = JSON.parse(localStorage.getItem('projects')) || [];
+        document.getElementById('deleteProjectForm').addEventListener('submit', function(event) {
+            event.preventDefault();
 
-            var projectList = document.getElementById('projectList');
-            projectList.innerHTML = ''; // Clear previous list
+            const projectName = document.getElementById('projectName').value;
 
-            projects.forEach(function(project) {
-                var listItem = document.createElement('li');
-                listItem.classList.add('project-item');
-                listItem.innerHTML = `
-                    <span>${project.name} - ${project.date} (Budget: ${project.budget})</span>
-                    <button class="delete-button" onclick="deleteProject('${project.name}')">Delete</button>
-                `;
-                projectList.appendChild(listItem);
+            fetch(`http://localhost:8032/projects/name/${projectName}`, {
+                method: 'DELETE'
+            })
+            .then(response => response.json())
+            .then(data => {
+                const messageElement = document.getElementById('message');
+                if (data.error) {
+                    messageElement.textContent = 'Error: ' + data.error;
+                    messageElement.style.color = 'red';
+                } else {
+                    messageElement.textContent = data.message;
+                    messageElement.style.color = 'green';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
             });
-        }
-
-        // Function to delete a project
-        function deleteProject(projectName) {
-            var confirmation = confirm(`Are you sure you want to delete project "${projectName}"?`);
-            if (confirmation) {
-                var projects = JSON.parse(localStorage.getItem('projects')) || [];
-
-                // Filter out the project to be deleted
-                var updatedProjects = projects.filter(function(project) {
-                    return project.name !== projectName;
-                });
-
-                // Update localStorage with updated projects list
-                localStorage.setItem('projects', JSON.stringify(updatedProjects));
-
-                // Display confirmation message
-                alert(`Project "${projectName}" deleted successfully.`);
-
-                // Refresh the project list
-                displayProjects();
-            }
-        }
-
-        function logout() {
-            var confirmation = confirm('Are you sure you want to logout?');
-            if (confirmation) {
-                window.location.href = 'index.html'; // Redirect to index.html
-            }
-        }
-
-        // Load projects when the page loads
-        window.onload = displayProjects;
+        });
     </script>
 </body>
 </html>

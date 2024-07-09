@@ -1,12 +1,11 @@
 body {
-    display: flex;
-    align-items: center;
-    justify-content: center;
     font-family: sans-serif;
     line-height: 1.5;
     min-height: 100vh;
     background: #f3f3f3;
-    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin: 0;
 }
 
@@ -15,19 +14,22 @@ body {
     border-radius: 15px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
     padding: 20px 30px;
-    transition: transform 0.2s;
-    width: 400px;
+    width: 90%; /* Adjusted width for better mobile compatibility */
+    max-width: 400px; /* Added max-width for responsiveness */
     text-align: center;
+    transition: transform 0.2s;
 }
 
 h1 {
     color: #0047AB;
     margin-bottom: 10px;
+    font-size: 24px; /* Increased font size for mobile readability */
 }
 
 h3 {
     color: #555;
     margin-bottom: 20px;
+    font-size: 18px; /* Increased font size for mobile readability */
 }
 
 label {
@@ -38,16 +40,18 @@ label {
     text-align: left;
     color: #555;
     font-weight: bold;
+    font-size: 16px; /* Adjusted font size for mobile readability */
 }
 
 input {
     display: block;
-    width: 100%;
+    width: calc(100% - 20px); /* Adjusted width for better spacing and responsiveness */
     margin-bottom: 15px;
     padding: 10px;
     box-sizing: border-box;
     border: 1px solid #ddd;
     border-radius: 5px;
+    font-size: 16px; /* Adjusted font size for mobile readability */
 }
 
 button {

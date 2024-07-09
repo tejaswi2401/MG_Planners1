@@ -1,119 +1,124 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krishnalanka Project</title>
-    <link rel="stylesheet" href="c2.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.3/xlsx.full.min.js"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            background-image: url('const.jpeg');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
-
-        .main {
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 15px;
-            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-            padding: 20px 30px;
-            text-align: center;
-            width: 600px;
-        }
-
-        h1 {
-            color: #0047AB;
-            margin-bottom: 10px;
-        }
-
-        h3 {
-            color: #555;
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            width: 100%;
-            margin-top: 10px;
-            margin-bottom: 5px;
-            text-align: left;
-            color: #555;
-            font-weight: bold;
-        }
-
-        input, select {
-            display: block;
-            width: 100%;
-            margin-bottom: 15px;
-            padding: 10px;
-            box-sizing: border-box;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        button {
-            padding: 15px;
-            border-radius: 10px;
-            margin-top: 15px;
-            margin-bottom: 15px;
-            border: none;
-            color: white;
-            cursor: pointer;
-            background-color: #0047AB;
-            width: 100%;
-            font-size: 16px;
-        }
-
-        button:hover {
-            background-color: #003A8B;
-        }
-
-        .wrap {
-            display: flex;
-            width: 100%;
-            height: 100%;
-            justify-content: center;
-            align-items: center;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-
-        table, th, td {
-            border: 1px solid #ddd;
-            padding: 8px;
-            text-align: left;
-        }
-
-        th {
-            background-color: #f2f2f2;
-        }
-
-        .total {
-            text-align: right;
-            font-weight: bold;
-            margin-top: 10px;
-        }
-
-        .search-container {
-            margin-top: 20px;
-            display: none;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Krishnalanka Project</title>
+        <link rel="stylesheet" href="c2.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.3/xlsx.full.min.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+                background-image: url('const.jpeg');
+                background-size: cover;
+                background-position: center;
+                background-repeat: no-repeat;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                min-height: 100vh;
+            }
+    
+            .main {
+                background-color: rgba(255, 255, 255, 0.8);
+                border-radius: 15px;
+                box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+                padding: 20px 10px;
+                text-align: center;
+                max-width: 100%;
+                width: 90%;
+                overflow: auto;
+            }
+    
+            h1 {
+                color: #0047AB;
+                margin-bottom: 10px;
+            }
+    
+            h3 {
+                color: #555;
+                margin-bottom: 20px;
+            }
+    
+            label {
+                display: block;
+                width: 100%;
+                margin-top: 10px;
+                margin-bottom: 5px;
+                text-align: left;
+                color: #555;
+                font-weight: bold;
+            }
+    
+            input, select {
+                display: block;
+                width: 100%;
+                margin-bottom: 15px;
+                padding: 10px;
+                box-sizing: border-box;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+            }
+    
+            button {
+                padding: 15px;
+                border-radius: 10px;
+                margin-top: 15px;
+                margin-bottom: 15px;
+                border: none;
+                color: white;
+                cursor: pointer;
+                background-color: #0047AB;
+                width: 100%;
+                font-size: 16px;
+            }
+    
+            button:hover {
+                background-color: #003A8B;
+            }
+    
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+    
+            table, th, td {
+                border: 1px solid #ddd;
+                padding: 8px;
+                text-align: left;
+            }
+    
+            th {
+                background-color: #f2f2f2;
+            }
+    
+            .total {
+                text-align: right;
+                font-weight: bold;
+                margin-top: 10px;
+            }
+    
+            .search-container {
+                margin-top: 20px;
+                display: none;
+            }
+    
+            @media (max-width: 768px) {
+                .main {
+                    padding: 20px 5px;
+                }
+    
+                button {
+                    padding: 10px;
+                    font-size: 14px;
+                }
+            }
+        </style>
+    </head>
 <body>
     <div class="wrap">
         <div class="main">
@@ -181,7 +186,7 @@
             });
 
             async function fetchMaterialInfo(material) {
-                var excelFileUrl = 'krishnalanka.xlsx';
+                var excelFileUrl = 'http://localhost:8032/krishnalanka-data';
 
                 try {
                     const response = await fetch(excelFileUrl);

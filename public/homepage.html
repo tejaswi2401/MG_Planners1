@@ -60,11 +60,11 @@
 
         .center-content {
             display: flex;
-            flex-direction: row; /* Display dropdowns in a row */
+            flex-direction: column;
             align-items: center;
             justify-content: center;
             text-align: center;
-            margin-top: 150px;
+            margin-top: 100px;
         }
 
         .button,
@@ -151,6 +151,28 @@
         .dropdown:hover .nested-dropdown {
             display: block;
         }
+
+        @media (min-width: 600px) {
+            .center-content {
+                flex-direction: row;
+                margin-top: 150px;
+            }
+        }
+
+        @media (max-width: 599px) {
+            .navbar .logo img {
+                height: 40px;
+            }
+            .navbar .logout a {
+                padding: 10px 12px;
+                font-size: 14px;
+            }
+            .button, .dropdown .dropbtn {
+                width: 150px;
+                font-size: 18px;
+                padding: 10px 14px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -164,13 +186,7 @@
     </div>
 
     <div class="center-content">
-        <div class="dropdown">
-            <button class="dropbtn" onclick="toggleDropdown('reportsDropdown')">Reports</button>
-            <div id="reportsDropdown" class="dropdown-content">
-                <a href="reports.html">View Reports</a>
-                <a href="add_report.html">Add Report</a>
-            </div>
-        </div>
+        <a href="reports.html" class="button">Reports</a>
         <div class="dropdown">
             <button class="dropbtn" onclick="toggleDropdown('projectsDropdown')">Projects</button>
             <div id="projectsDropdown" class="dropdown-content">
@@ -179,8 +195,7 @@
                 <a href="delete_project.html">Delete Project</a>
             </div>
         </div>
-        
-            <a href="materials.html" class="button">Materials</a>
+        <a href="materials.html" class="button">Materials</a>
         <a href="bill_entry.html" class="button">Bill Entry</a>
     </div>
 
